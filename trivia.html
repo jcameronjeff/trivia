@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <style type="text/css">
+  
+  .parallax-window {
+    min-height: 500px;
+    background: transparent;
+}
+  
+  body {
+    background-color:antiquewhite
+  }
+  #triviaContainer {
+    margin: 100px auto;
+    border-radius: 20px;
+   
+    max-width: 800px;
+    width: 100%;
+    text-align: center;
+    
+  }
+
+  #time {
+    color: red;
+    font-size: 20px;
+  }
+
+
+.question {
+
+  padding: 20px;
+  
+}
+
+.slide {
+  font-size: 18px;
+  padding: 10px;
+}
+
+label {
+  display: table;
+  max-width: 100%;
+  margin-bottom: 5px;
+  font-weight: 700;
+  margin: 0 auto;
+}
+
+
+#runTrivia {
+  font-size: 15px;
+
+}
+  
+#triviaWrapper {
+  padding: 75px 0px;
+  width: 75%;
+  height: auto;
+  margin: 0 auto;
+  -webkit-box-shadow: 0px 1px 18px 6px rgba(0,0,0,0.27);
+-moz-box-shadow: 0px 1px 18px 6px rgba(0,0,0,0.27);
+box-shadow: 0px 1px 18px 6px rgba(0,0,0,0.27);
+}
+
+  button {
+
+transform: translateZ(0);
+transition-duration: 0.3s;
+transition-property: transform;
+  }
+  
+  button:focus {
+   outline: none;
+  }
+
+  button:hover
+  {
+      transform: scale(1.3);
+      transition-duration: 0.3s;
+  }
+  button:active {
+    transform: translateY(-20px);
+  }
+  
+
+  </style>
+
+  <title>Quiz Practice</title>
+
+</head>
+
+<body>
+    <div class="parallax-window" data-parallax="scroll" data-image-src="http://www.longviewschool.org/wp-content/uploads/2013/07/SigningConstitution.jpg"></div>
+
+ <div id="triviaContainer">
+         
+
+          
+          <div id="triviaWrapper" class="panel">
+              <h1>My Javascript Trivia</h1>
+            <div><span id="time"></span></div>
+
+            <div id="trivia"> 
+              <p></p>
+              <button id="runTrivia"><h4>Ready to Begin?</h4></button>
+
+              <p></p>
+              <div id="question"> </div>
+              
+              <p></p>
+              <button id="submit">Submit</button>
+              <p></p>
+              <div id="score"></div>
+              <p></p>
+              <div id="answers"></div>
+              <p></p>
+            </div>
+          </div>
+
+  </div>
+
+  
+ <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+ <script src="scripts/parallax.js"></script>
+ <script type="text/javascript"> 
+
+// * You'll create a trivia form with multiple choice or true/false options (your choice).
+
+// * The player will have a limited amount of time to finish the quiz. 
+
+//   * The game ends when the time runs out. The page will reveal the number of questions that players answer correctly and incorrectly.
+
+// * Don't let the player pick more than one answer per question.
+
+// * Don't forget to include a countdown timer.
+
+const questions = [ 
+  {
+  question: "Who was the first explorer to sail to North America?",
+  answers: {
+  a: "Leif Erikson",
+  b: "Christopher Columbus",
+  c: "Amerigo Vespucci",
+           },
+  correctAnswer: 'a'
+  },
+
+  {
+  question: "What disease crippled President Franklin D. Roosevelt and led him to help the nation find a cure?",
+  answers: {
+  a: "Cancer",
+  b: "Meningitis",
+  c:  "Polio",
+           },
+  correctAnswer: 'c'
+  },
+  
+  {
+  question: "What is the oldest US state?",
+  answers: {
+  a: "Rhode Island",
+  b: "Massachussetts",
+  c: "Delaware",
+           },
+  correctAnswer: 'c'
+  },
+
+  {
+  question:"America&#039;s Strategic Defense System during the Cold War was nicknamed after this famous movie.",
+  answers: {
+  a: "Jaws",
+  b: "Blade Runner",
+  c: "Star Wars",
+           },
+  correctAnswer: 'c'
+  },
+
+  {
+  question: "In what year did the Wall Street Crash take place?",
+  answers: {
+  a: "1929",
+  b: "1932",
+  c: "1925",
+           },
+  correctAnswer: 'a'
+  },
+
+
+];
+
+var score = 0;
+var numCorrect = 0;
+var numWrong = 0;
+var numAnswers = 0;
+
+
+
+window.onload = function() {
+
+  $('.parallax-window').parallax({imageSrc: "http://www.longviewschool.org/wp-content/uploads/2013/07/SigningConstitution.jpg"});
+
+
+$("#submit").on("click", stop);
+$("#reset").on("click", reset);
+$("#runTrivia").on("click", start);
+$("#time").text("02:00");
+};
+
+function makeTrivia (){
+   
+
+  $('#runTrivia').hide();
+  //container for questions to go to html
+  const questionBank = [];
+
+
+questions.forEach(function(questions, question) {
+//Answer Bank
+  const answers = [];
+  showQuestion = questions.question;
+
+  
+  for (letter in questions.answers) {
+        answers.push(
+          `<label><input type="radio" name="question${question}" value="${letter}" id="${question}" >
+              ${letter} :
+              ${questions.answers[letter]}
+           </label>`
+        );
+      };
+
+ questionBank.push(`<div class="slide">
+           <div class="question"> ${questions.question} </div>
+           <div class="answers"> ${answers.join("")} </div>
+         </div>`);
+  // console.log(questionBank);
+
+
+});
+ 
+//sends to html
+$("#question").html(questionBank);
+
+};
+
+$( "#runTrivia" ).on( "click", makeTrivia) 
+
+answeredRight = [];
+
+function pullAnswers(){
+ 
+  const userAnswers = [];
+  const correctAnswers = [];
+      $('input:checked').each(function(){
+          userAnswers.push($(this).val());});
+          
+
+console.log(userAnswers);
+
+ $("#answers").html('<p>Correct Answers: ' + numCorrect +'</p>' + '</p>Incorrect Answers: ' + numWrong + '</p>')
+
+
+questions.forEach(function(questions, question) {
+  const selector = `input[name=question${question}]:checked`;
+
+  correctAnswers.push(questions.correctAnswer);
+  // correctAnswers.push(questions.correctAnswer);
+  
+ });
+
+console.log(correctAnswers);
+
+if (userAnswers[0] === correctAnswers [0]){console.log("ggod"); score+= 1; numCorrect += 1; console.log(numCorrect);} else {
+  $("#0").addClass("soWrong"); numWrong += 1;
+}
+if (userAnswers[1] === correctAnswers [1]){console.log("ggod"); score+= 1; numCorrect += 1; } else {numWrong += 1;
+  console.log("no"); 
+}
+if (userAnswers[2] === correctAnswers [2]){console.log("ggod"); score+= 1; numCorrect += 1; } else {
+  console.log("no"); numWrong += 1; }
+
+if (userAnswers[3] === correctAnswers [3]){console.log("ggod"); score+= 1; numCorrect += 1 } else {
+  console.log("no"); numWrong += 1;
+}
+if (userAnswers[4] === correctAnswers [4]){console.log("ggod"); score+= 1; numCorrect += 1; } else {
+  console.log("no"); numWrong += 1;
+}
+console.log(score);
+console.log(numCorrect);
+console.log(numWrong);
+
+$("#score").html("<h2>Score: " + Math.floor(score * 10)+"%" + "</h2>");
+// console.log((score/5) * 100);
+// $("#score").html("<button id=tryAgain>Try Again</button>");
+
+$('.slide').hide();
+$( "#submit" ).hide();
+$("#time").text("Time Up!");
+};
+
+$( "#submit" ).on( "click", pullAnswers); 
+
+$("#runTrivia").on("click", makeTrivia);
+
+	
+
+
+var intervalId;
+
+//prevents the clock from being sped up unnecessarily
+var clockRunning = false;
+
+// var converted = stopwatch.timeConverter(stopwatch.time);
+
+var time = 120;
+
+function reset() {
+
+  time = 120;
+
+
+  $("#time").text("02:00");
+
+}
+
+function start() {
+  intervalId = setInterval(count, 1000);
+  clockRunning = true;
+}
+
+function stop() {
+
+  console.log("stopping");
+  clearInterval(intervalId);
+  pullAnswers();
+  $("#time").text("Great Job!");
+}
+
+function count() {
+
+  time--;
+  var converted = timeConverter(time);
+  $("#time").text(converted);
+
+}
+
+function timeConverter(t) {
+
+  var minutes = Math.floor(t / 60);
+  var seconds = t - (minutes * 60);
+
+  if (seconds < 1)
+  {
+    stop();
+   
+    // seconds = "000" + seconds;
+  }
+
+  if (seconds < 10) {
+   seconds = "0" + seconds;
+  }
+
+  if (minutes < 1) {
+    minutes = "00";
+  }
+
+  return minutes + ":" + seconds;
+}
+
+
+ </script>
+
+</body>
+</html>
