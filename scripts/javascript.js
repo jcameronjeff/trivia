@@ -1,6 +1,6 @@
 
 
-const questions = [ 
+const questions = [
   {
   question: "Who was the first explorer to sail to North America?",
   answers: {
@@ -20,7 +20,7 @@ const questions = [
            },
   correctAnswer: 'c'
   },
-  
+
   {
   question: "What is the oldest US state?",
   answers: {
@@ -70,13 +70,13 @@ $("#submit").on("click", stop);
 $("#reset").on("click", reset);
 $("#runTrivia").on("click", start);
 $("#time").text("02:00");
-$( "#runTrivia" ).on( "click", makeTrivia) 
+$( "#runTrivia" ).on( "click", makeTrivia)
 };
 
 // starts game up.
 
 function makeTrivia (){
-   
+
   //button starts game, hides itself.
 
   $('#runTrivia').hide();
@@ -106,7 +106,7 @@ questions.forEach(function(questions, question) {
             <div class="answers"> ${answers.join("")} </div>
           </div>`);
     });
-    
+
     //sends to html
     $("#question").html(questionBank);
 };
@@ -114,17 +114,17 @@ questions.forEach(function(questions, question) {
 
 
 
-// happens on submit or on click submit. Takes the answer chouces and compares each against correct answer index. 
-// I wanted to use a forEach for checking correct/incorrect, but couldn't get it working in time. 
+// happens on submit or on click submit. Takes the answer chouces and compares each against correct answer index.
+// I wanted to use a forEach for checking correct/incorrect, but couldn't get it working in time.
 //
 
 function pullAnswers(){
- 
+
   const userAnswers = [];
   const correctAnswers = [];
       $('input:checked').each(function(){
           userAnswers.push($(this).val());});
-          
+
 
 console.log(userAnswers);
 
@@ -136,7 +136,7 @@ questions.forEach(function(questions, question) {
 
   correctAnswers.push(questions.correctAnswer);
   // correctAnswers.push(questions.correctAnswer);
-  
+
  });
 
 
@@ -146,23 +146,11 @@ console.log(correctAnswers);
 
 
 
-// answer checking. Would have rather made this a function, but again it wouldn't work.
-
-if (userAnswers[0] === correctAnswers [0]){console.log("good"); score+= 1; numCorrect += 1; console.log(numCorrect);} else {
-  $("#0").addClass("soWrong"); numWrong += 1;
-}
-if (userAnswers[1] === correctAnswers [1]){console.log("good"); score+= 1; numCorrect += 1; } else {numWrong += 1;
-  console.log("no"); 
-}
-if (userAnswers[2] === correctAnswers [2]){console.log("good"); score+= 1; numCorrect += 1; } else {
-  console.log("no"); numWrong += 1; }
-
-if (userAnswers[3] === correctAnswers [3]){console.log("good"); score+= 1; numCorrect += 1 } else {
-  console.log("no"); numWrong += 1;
-}
-if (userAnswers[4] === correctAnswers [4]){console.log("good"); score+= 1; numCorrect += 1; } else {
-  console.log("no"); numWrong += 1;
-}
+// for Loop for answer checking.
+for (var i = 0; i < userAnswers.length; i++) {
+if (userAnswers[i] === correctAnswers [i]){console.log("good"); score+= 1; numCorrect += 1; console.log(numCorrect);} else {
+  numWrong += 1;
+}};
 
 //for testing. Leaving in here for future work.
 console.log(score);
@@ -179,11 +167,11 @@ $("#time").text("Time Up!");
 };
 
 
-$( "#submit" ).on( "click", pullAnswers); 
+$( "#submit" ).on( "click", pullAnswers);
 $("#runTrivia").on("click", makeTrivia);
 
-	
-// timer functions   
+
+// timer functions
     // there is still a problem when time runs out. The game ends, but the I can't seem to replace the text. (works for submit button but not timeout)
 //
 
@@ -207,6 +195,7 @@ function start() {
 
 function stop() {
   console.log("stopping");
+  clockRunning = false;
   clearInterval(intervalId);
   pullAnswers();
   $("#time").text("Great Job!");
@@ -223,10 +212,10 @@ function timeConverter(t) {
   var minutes = Math.floor(t / 60);
   var seconds = t - (minutes * 60);
 
-  if (seconds < 1)
+  if (minutes < 1 && seconds < 1)
   {
     stop();
-   
+
     // seconds = "000" + seconds;
   }
   if (seconds < 10) {
