@@ -66,7 +66,7 @@ $("#counter").text("Question " + (questionCount + 1) + "/10");
     console.log(questionHolder);
 
 //show first question.
-$( "form" ).first().show();
+$( "form" ).first().fadeIn('slow');
 
 
 
@@ -97,7 +97,7 @@ $("#submit").on("click", toggleHide);
 
 function toggleHide() {
 
-$( "form:visible" ).next().show();
+$( "form:visible" ).next().fadeIn('slow');
 $( "form:visible" ).first().hide();
 questionCount += 1;
 console.log(answerKey);
@@ -151,15 +151,19 @@ stop();
 
 //append score to dom.
       var scoreBox = $("<div id = '#score'>").html("<h2>Score: " + Math.floor(score * 10)+"%" + "</h2>");
+      var keyDiv = $("<div id = 'keyDiv'>")
 
-      scoreBox.prepend("<h1>Good Job!</h1>");
-      scoreBox.append("<h3>Correct Answers: " + numCorrect + "</h3>" + "<p>" + gotRight + "<p>")
-      scoreBox.append("<h3>Incorrect Answers: " + numWrong + "</h3>" + "<p>" + gotWrong + "<p>");
-      scoreBox.append("<h3>Answer Key</h3>" + questionHolder);
+      scoreBox.prepend("<h2>Good Job!</h1>");
+
+      keyDiv.append("<table><tr><th> Correct Answers </th><th> Incorrect Answers </th></tr><tr><td>" + numCorrect + "</td> <td>" + numWrong + "</td></tr><tr><td>" + gotRight + '</td><td>' + gotWrong + "</td></tr></table>");
+
+      keyDiv.append("<h3>Answer Key</h3>" + questionHolder);
+
+      scoreBox.append(keyDiv);
       $("#triviaContainer").append(scoreBox);
 
-
 };
+
 
 
 //Timer function
