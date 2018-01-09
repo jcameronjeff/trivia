@@ -1,22 +1,17 @@
 .parallax-window {
-    min-height: 500px;
+    min-height: 200px;
     background: transparent;
 }
-  
+
   body {
     background-color:antiquewhite
   }
 
-  
-  #triviaContainer {
-    margin: 100px auto;
-    border-radius: 20px;
-   
-    max-width: 800px;
-    width: 100%;
-    text-align: center;
-    
+
+  span {
+text-align: center;
   }
+
 
   #time {
     color: red;
@@ -27,36 +22,41 @@
 .question {
 
   padding: 20px;
-  
+
 }
 
-.slide {
-  font-size: 18px;
-  padding: 10px;
-}
 
 label {
   display: table;
   max-width: 100%;
   margin-bottom: 5px;
   font-weight: 700;
-  margin: 0 auto;
-}
+  margin-top: 10px;
 
+}
 
 #runTrivia {
   font-size: 15px;
 
 }
-  
+
+.answer {
+  padding-left: 30px;
+}
+
 #triviaWrapper {
-  padding: 75px 0px;
-  width: 75%;
+  background-color: white;
+  padding: 30px 0px;
+  width: 80%;
   height: auto;
-  margin: 0 auto;
+  margin: -50px auto 100px auto;
+  border-radius: 20px;
+  max-width: 800px;
+font-size: 20px;
   -webkit-box-shadow: 0px 1px 18px 6px rgba(0,0,0,0.27);
 -moz-box-shadow: 0px 1px 18px 6px rgba(0,0,0,0.27);
 box-shadow: 0px 1px 18px 6px rgba(0,0,0,0.27);
+text-align: center;
 }
 
   button {
@@ -65,7 +65,7 @@ transform: translateZ(0);
 transition-duration: 0.3s;
 transition-property: transform;
   }
-  
+
   button:focus {
    outline: none;
   }
