@@ -7,6 +7,7 @@ function trivia(){
 start();
 //hide begin button.
 $('#runTrivia').hide();
+$('.instructions').hide();
 //show submit button.
 $('#submit').show();
 
@@ -16,6 +17,7 @@ var questionCount = 0;
 var queryURL = "https://opentdb.com/api.php?amount=10&category=23&difficulty=easy";
 
 answerKey = [];
+questionHolder = [];
 
 //appends question number to dom.
 $("#counter").text("Question " + (questionCount + 1) + "/10");
@@ -44,6 +46,7 @@ $("#counter").text("Question " + (questionCount + 1) + "/10");
         var question = $("<form class = 'form-horizonal'>").text(questionStem).attr({class: "question"}).attr({id: i});
         $("#triviaContainer").append(question);
 
+        questionHolder.push("<p class='answerKey'>" + questionStem + '<br>' + "<p style='color:green'>" + correct);
         answers.push(correct);
         answerBank.push(answers);
         shuffle(answers);
@@ -60,7 +63,7 @@ $("#counter").text("Question " + (questionCount + 1) + "/10");
         question.hide();
         // answerBank.length = 0;
     };
-
+    console.log(questionHolder);
 
 //show first question.
 $( "form" ).first().show();
@@ -152,8 +155,9 @@ stop();
       scoreBox.prepend("<h1>Good Job!</h1>");
       scoreBox.append("<h3>Correct Answers: " + numCorrect + "</h3>" + "<p>" + gotRight + "<p>")
       scoreBox.append("<h3>Incorrect Answers: " + numWrong + "</h3>" + "<p>" + gotWrong + "<p>");
-
+      scoreBox.append("<h3>Answer Key</h3>" + questionHolder);
       $("#triviaContainer").append(scoreBox);
+
 
 };
 
